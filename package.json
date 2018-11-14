@@ -1,0 +1,27 @@
+{
+  "name": "spi-reimbursement-request",
+  "version": "1.0.0",
+  "description": "SPI Reimbursement Request",
+  "main": "index.js",
+  "author": "Luca Filipozzi <luca.filipozzi@gmail.com>",
+  "license": "ISC",
+  "scripts": {
+    "clean": "rm -rf .cache/ dist/ node_modules/",
+    "start": "parcel index.html",
+    "build": "parcel build --public-url /spi/ index.html"
+  },
+  "dependencies": {
+    "bootstrap": "^4.1.3",
+    "jquery": "1.9.1 - 3",
+    "json-rules-engine-simplified": "^0.1.17",
+    "jspdf": "1.4.x",
+    "jspdf-autotable": "^2.3.5",
+    "popper.js": "^1.14.3",
+    "prop-types": "^15.5.10",
+    "react": "^16.0.0",
+    "react-dom": "~15 || ~16",
+    "react-jsonschema-form": "^1.0.0",
+    "react-jsonschema-form-conditionals": "^0.3.12",
+    "reactstrap": "^6.5.0"
+  }
+}
