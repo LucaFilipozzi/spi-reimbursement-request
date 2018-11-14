@@ -300,7 +300,7 @@ class Instructions extends React.Component {
               <ul>
                 <li>Enter Your Name, which must match the name in the Reimbursement Request from Step 1.</li>
                 <li>Set Your Home Currency as appropriate.</li>
-                <li>Leave/set Credit Card @ 3%, Debit Card @ 5%, Foreign Cash @ 5%, Traveller's Cheque @ 2%.</li>
+                <li>Leave/set Credit Card @ 3%, Debit Card @ 5%, Foreign Cash @ 5%, Traveller Cheque @ 2%.</li>
                 <li>Enter Receipt Details, one row per receipt, specifing the correct date, amount and currency of the transactions.</li>
               </ul>
             </CardBody>
