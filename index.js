@@ -10,8 +10,9 @@ import { Table } from "reactstrap";
 import Form from "react-jsonschema-form";
 import Engine from "json-rules-engine-simplified";
 import applyRules from "react-jsonschema-form-conditionals";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const schema = {
   title: "",
@@ -187,7 +188,8 @@ const schema = {
         email:    { title: "email",    type: "string", format: "email" },
         project:  { title: "project",  "$ref": "#/definitions/projects" },
         name:     { title: "name",     type: "string" }
-      }
+      },
+      required: ["date", "email", "project", "name"]
     },
     curr: {
       type: "object",
@@ -212,7 +214,8 @@ const schema = {
           },
           required: ["delta", "gamma"]
         }
-      }
+      },
+      required: ["currency"]
     },
     acct: {
       type: "object",
@@ -225,12 +228,13 @@ const schema = {
       type: "object",
       title: "bank information",
       properties: {
+        city:    { title: "city",                   type: "string" },
+        country: { title: "country",                type: "string" },
         line1:   { title: "street address",         type: "string" },
         line2:   { title: "street address (cont)",  type: "string" },
-        city:    { title: "city",                   type: "string" },
-        state:   { title: "state",                  type: "string" },
-        country: { title: "country",                type: "string" }
-      }
+        state:   { title: "state",                  type: "string" }
+      },
+      required: ["city", "country", "line1", "line2", "state"]
     }
   }
 };
@@ -252,7 +256,9 @@ const uiSchema = {
   },
   "curr": {
     "ui:order": [
-      "currency"
+      "currency",
+      "CAD",
+      "USD"
     ],
     "CAD": {
       "ui:order": [
@@ -423,6 +429,7 @@ class ConditionalForm extends React.Component {
     this.ConditionalForm = applyRules(schema, uiSchema, rules, Engine)(Form);
   }
 
+  /*
   onSubmit(state) {
     const opts = {
       bodyStyles: {
@@ -472,6 +479,56 @@ class ConditionalForm extends React.Component {
     pdf.text(40, 50, "Reimbursement Request");
     pdf.autoTable(cols, rows, opts);
     pdf.save("spi_reimbursement_request.pdf");
+  }
+  */
+
+  onSubmit(state) {
+    var content = [{text: "Reimbursement Request", style: "title"}];
+
+    ["meta", "curr", "acct", "bank"].forEach(function(x) {
+      var body = [
+        [
+          {text: schema.properties[x].title, colSpan: 2, style: "table"},
+          {}
+        ]
+      ];
+      uiSchema[x]["ui:order"].forEach(function(y) {
+        if (state.formData[x][y] !== undefined) {
+          console.log(state.formData[x]);
+          body.push(
+            [
+              {text: schema.properties[x].properties[y].title},
+              {text: state.formData[x][y]}
+            ]
+          );
+        }
+      });
+      content.push(
+        {
+          table: {
+            headerRows: 1,
+            widths: [150, "*"],
+            body: body
+          },
+          margin: [0, 15, 0, 0]
+        }
+      );
+    });
+
+    const styles = {
+      title: {
+        fontSize: 24,
+        bold: true
+      },
+      table: {
+        fontSize: 16,
+        bold: true,
+        color: 'white',
+        fillColor: 'gray',
+      }
+    };
+
+    pdfMake.createPdf({content: content, styles: styles}).download();
   }
 
   render() {
