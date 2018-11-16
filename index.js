@@ -234,7 +234,7 @@ const schema = {
         line2:   { title: "street address (cont)",  type: "string" },
         state:   { title: "state",                  type: "string" }
       },
-      required: ["city", "country", "line1", "line2", "state"]
+      required: ["city", "country", "line1", "state"]
     }
   }
 };
@@ -429,106 +429,84 @@ class ConditionalForm extends React.Component {
     this.ConditionalForm = applyRules(schema, uiSchema, rules, Engine)(Form);
   }
 
-  /*
   onSubmit(state) {
-    const opts = {
-      bodyStyles: {
-        valign: "top"
-      },
-      columnStyles: {
-        field: {
-          columnWidth: 100,
-          fontStyle: "bold"
-        },
-        value: {
-          columnWidth: "auto",
-        }
-      },
-      showHeader: "never",
-      startY: 80,
-      styles: {
-        columnWidth: "wrap",
-        fontSize: 12,
-        overflow: "linebreak"
-      },
-      theme: "grid"
-    };
-    const cols = [
-      {dataKey: "field", title: "Field"},
-      {dataKey: "value", title: "Value"}
-    ]
-    var rows = [];
-    ["meta", "curr", "acct", "bank"].map(x => {
-      console.log(x);
-      if (uiSchema.hasOwnProperty(x)) {
-        uiSchema[x]["ui:order"].map(y => {
-          console.log(y);
-          if (state.formData[x][y] !== undefined) {
-            rows.push(
-              {
-                field: schema.properties[x].properties[y].title,
-                value: state.formData[x][y]
-              }
-            );
-          }
-        });
-      }
-    });
-    var pdf = new jsPDF({unit: "pt", format: "letter"});
-    pdf.setFontSize(26);
-    pdf.text(40, 50, "Reimbursement Request");
-    pdf.autoTable(cols, rows, opts);
-    pdf.save("spi_reimbursement_request.pdf");
-  }
-  */
+    var makeBody = function(schema, uiSchema, formData) {
+      var body = [];
 
-  onSubmit(state) {
-    var content = [{text: "Reimbursement Request", style: "title"}];
-
-    ["meta", "curr", "acct", "bank"].forEach(function(x) {
-      var body = [
+      body.push( // header
         [
-          {text: schema.properties[x].title, colSpan: 2, style: "table"},
+          {text: schema.title, colSpan: 2, style: "table"},
           {}
         ]
-      ];
-      uiSchema[x]["ui:order"].forEach(function(y) {
-        if (state.formData[x][y] !== undefined) {
-          console.log(state.formData[x]);
-          body.push(
-            [
-              {text: schema.properties[x].properties[y].title},
-              {text: state.formData[x][y]}
-            ]
+      );
+
+      uiSchema["ui:order"].forEach(function(x) {
+        if (x in formData) {
+          body.push( // row
+            (typeof(formData[x]) === "object") ?
+              [ // recurse
+                {text: "additional required parameters"},
+                makeTable(schema.properties[x], uiSchema[x], formData[x])
+              ] : [
+                {text: schema.properties[x].title},
+                {text: formData[x]}
+              ]
           );
         }
       });
-      content.push(
-        {
-          table: {
-            headerRows: 1,
-            widths: [150, "*"],
-            body: body
-          },
-          margin: [0, 15, 0, 0]
-        }
-      );
-    });
 
-    const styles = {
-      title: {
-        fontSize: 24,
-        bold: true
-      },
-      table: {
-        fontSize: 16,
-        bold: true,
-        color: 'white',
-        fillColor: 'gray',
-      }
+      return(body);
     };
 
-    pdfMake.createPdf({content: content, styles: styles}).download();
+    var makeTable = function(properties, uiSchema, formData) {
+      var table = {
+        table: {
+          headerRows: 1,
+          widths: [100, "*"],
+          body: makeBody(properties, uiSchema, formData)
+        },
+        margin: [0, 15, 0, 0]
+      };
+
+      return(table);
+    };
+
+    var makeDocument = function(schema, uiSchema, formData) {
+      const styles = {
+        title: {
+          fontSize: 24,
+          bold: true
+        },
+        table: {
+          fontSize: 16,
+          bold: true,
+          color: 'white',
+          fillColor: 'gray',
+        }
+      };
+
+      var content = [];
+
+      content.push( // title
+        {text: "Reimbursement Request", style: "title"}
+      );
+
+      ["meta", "curr", "acct", "bank"].forEach(function(x) {
+        content.push( // table
+          makeTable(schema.properties[x], uiSchema[x], formData[x])
+        );
+      });
+
+      var document = {
+        styles: styles,
+        content: content
+      };
+
+      return(document);
+    }
+
+    var formData = state.formData;
+    pdfMake.createPdf(makeDocument(schema, uiSchema, formData)).download();
   }
 
   render() {
