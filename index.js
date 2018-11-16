@@ -181,34 +181,56 @@ const schema = {
   properties: {
     meta: {
       type: "object",
-      title: "",
+      title: "meta information",
       properties: {
-        amount:   { title: "amount",   type: "number" },
-        currency: { title: "currency", "$ref": "#/definitions/currencies"},
         date:     { title: "date",     type: "string", format: "date" },
         email:    { title: "email",    type: "string", format: "email" },
         project:  { title: "project",  "$ref": "#/definitions/projects" },
-        name:     { title: "name",     type: "string" },
-      },
-      required: ["currency", "name"],
+        name:     { title: "name",     type: "string" }
+      }
     },
-    CAD: {
+    curr: {
       type: "object",
-      title: "",
+      title: "currency information",
       properties: {
-        alpha: { title: "alpha", type: "string" },
-        bravo: { title: "bravo", type: "string" }
-      },
-      required: ["alpha", "bravo"],
+        currency: { title: "currency", "$ref": "#/definitions/currencies"},
+        CAD: {
+          type: "object",
+          title: "",
+          properties: {
+            alpha: { title: "alpha", type: "string" },
+            bravo: { title: "bravo", type: "string" }
+          },
+          required: ["alpha", "bravo"],
+        },
+        USD: {
+          type: "object",
+          title: "",
+          properties: {
+            delta: { title: "delta", type: "string" },
+            gamma: { title: "gamma", type: "string" }
+          },
+          required: ["delta", "gamma"]
+        }
+      }
     },
-    USD: {
+    acct: {
       type: "object",
-      title: "",
+      title: "account information",
       properties: {
-        delta: { title: "delta", type: "string" },
-        gamma: { title: "gamma", type: "string" }
-      },
-      required: ["delta", "gamma"]
+        iban:    { title: "iban", type: "string" },
+      }
+    },
+    bank: {
+      type: "object",
+      title: "bank information",
+      properties: {
+        line1:   { title: "street address",         type: "string" },
+        line2:   { title: "street address (cont)",  type: "string" },
+        city:    { title: "city",                   type: "string" },
+        state:   { title: "state",                  type: "string" },
+        country: { title: "country",                type: "string" }
+      }
     }
   }
 };
@@ -216,47 +238,65 @@ const schema = {
 const uiSchema = {
   "ui:order": [
     "meta",
-    "CAD",
-    "USD"
+    "curr",
+    "acct",
+    "bank"
   ],
   "meta": {
     "ui:order": [
-      "date",
       "project",
+      "date",
       "name",
       "email",
-      "amount",
+    ]
+  },
+  "curr": {
+    "ui:order": [
       "currency"
+    ],
+    "CAD": {
+      "ui:order": [
+        "alpha",
+        "bravo"
+      ]
+    },
+    "USD": {
+      "ui:order": [
+        "delta",
+        "gamma"
+      ]
+    }
+  },
+  "acct": {
+    "ui:order": [
+      "iban"
     ]
   },
-  "CAD": {
+  "bank": {
     "ui:order": [
-      "alpha",
-      "bravo"
-    ]
-  },
-  "USD": {
-    "ui:order": [
-      "delta",
-      "gamma"
+      "line1",
+      "line2",
+      "city",
+      "state",
+      "country"
     ]
   }
 };
 
-const rules = ["CAD", "USD"].map(currency => {
+const rules = ["CAD", "USD"].map(x => {
   return (
     {
       conditions: {
-        "meta.currency": {
+        "curr.currency": {
           not: {
-            equal: currency
+            equal: x
           }
         }
       },
       event: {
         type: "remove",
         params: {
-          field: currency
+          field: "curr." + x
         }
       }
     }
@@ -282,12 +322,7 @@ class Instructions extends React.Component {
           <CardHeader onClick={this.toggle} data-index={1}>Step 1: Prepare the Reimbursement Request</CardHeader>
           <Collapse isOpen={this.state.collapse === 1}>
             <CardBody>
-              <p>Use the Form to generate the Reimbursement Request. Click the Submit button to save the PDF file locally.</p>
-              <p>Notes:</p>
-              <ul>
-                <li>Ensure that the banking information is accurate as incorrect details are a major source of delays.</li>
-                <li>Know that the PDF file is generated in your browser. Nothing is transmitted to SPI until Step 5.</li>
-              </ul>
+              <p>Use the Form to generate the Reimbursement Request. Ensure that the banking details are accurate. Incorrect banking details are a major source of delays. Click Submit to generate a PDF file, which is generated locally in your browser (no data is transmitted to the server).</p>
             </CardBody>
           </Collapse>
         </Card>
@@ -295,13 +330,12 @@ class Instructions extends React.Component {
           <CardHeader onClick={this.toggle} data-index={2}>Step 2: Prepare the Expense Report</CardHeader>
           <Collapse isOpen={this.state.collapse === 2}>
             <CardBody>
-              <p>Use the <a href="http://www.xe.com/travel-expenses-calculator/">XE Travel Expenses Calculator</a> to prepare an Expense Report (even for non-travel expenses). Click the printer icon at the bottom of the form and save a PDF file rather than printing.</p>
+              <p>Use the <a href="https://www.xe.com/travel-expenses-calculator/">XE Travel Expenses Calculator</a> to prepare an Expense Report. Enter Receipt Details, one row per receipt, specifing the correct date, amount and currency of the transaction. Click the printer icon at the bottom of the form and save as a PDF file.</p>
               <p>Notes:</p>
               <ul>
-                <li>Enter Your Name, which must match the name in the Reimbursement Request from Step 1.</li>
-                <li>Set Your Home Currency as appropriate.</li>
-                <li>Leave/set Credit Card @ 3%, Debit Card @ 5%, Foreign Cash @ 5%, Traveller Cheque @ 2%.</li>
-                <li>Enter Receipt Details, one row per receipt, specifing the correct date, amount and currency of the transactions.</li>
+                <li>Set Name to the name entered in Step 1.</li>
+                <li>Set Your Home Currency to the currency entered in Step 1.</li>
+                <li>Set Credit Card to 3%, Debit Card to 5%, Foreign Cash to 5%, and Traveller Cheque to 2%.</li>
               </ul>
             </CardBody>
           </Collapse>
@@ -310,11 +344,7 @@ class Instructions extends React.Component {
           <CardHeader onClick={this.toggle} data-index={3}>Step 3: Prepare the Ordered Receipts</CardHeader>
           <Collapse isOpen={this.state.collapse === 3}>
             <CardBody>
-              <p>Collect your receipts in the SAME ORDER as the rows in the Expense Report from Step 2. Save them in PDF format.</p>
-              <p>Notes:</p>
-              <ul>
-                  <li>For paper receipts, scan them with a multi-function device or photograph them with your phone, converting to PDF.</li>
-              </ul>
+              <p>Collect your receipts in the <em>same order</em> as the rows in the Expense Report from Step 2. Save them as PDF files. For paper receipts, scan them with a multi-function device or photograph them with your phone, converting to PDF.</p>
             </CardBody>
           </Collapse>
         </Card>
@@ -328,12 +358,12 @@ class Instructions extends React.Component {
                 <li>from Step 2, the Expense Report</li>
                 <li>from Step 3, the Ordered Receipts</li>
               </ul>
-              <p>Save it in PDF format with filename <em>ReimbursementRequest_«YourName»_«IsoDate».pdf</em>.</p>
+              <p>Name it <em>ReimbursementRequest_«YourName»_«IsoDate».pdf</em>.</p>
               <p>Notes:</p>
               <ul>
                 <li>An example filename is <em>ReimbursementRequest_LucaFilipozzi_20181006.pdf</em>.</li>
                 <li>Ensure that the entire Submission Package can be easily understood as poor quality submissions are a major source of delays.</li>
-                <li>Consider using the pdfunite utility from the poppler-utils package (in Debian) to merge the individual PDF files into a single PDF file.</li>
+                <li>Consider using the pdfunite utility from the poppler-utils package (in Debian) to merge the individual PDF files into a single PDF file: <pre>pdfunite step1.pdf step2.pdf step3a.pdf step3b.pdf ... step3n.pdf output.pdf</pre>.</li>
               </ul>
             </CardBody>
           </Collapse>
@@ -351,7 +381,7 @@ class Instructions extends React.Component {
                   </tr>
                   <tr>
                     <th>to</th>
-                    <td>treasurer@rt.spi-inc.org (or «to_address» provided to you by even t organizer)</td>
+                    <td>treasurer@rt.spi-inc.org (or «to_address» provided to you by event organizer)</td>
                   </tr>
                   <tr>
                     <th>subject</th>
@@ -421,9 +451,11 @@ class ConditionalForm extends React.Component {
       {dataKey: "value", title: "Value"}
     ]
     var rows = [];
-    ["meta", state.formData["meta"]["currency"]].map(x => {
+    ["meta", "curr", "acct", "bank"].map(x => {
+      console.log(x);
       if (uiSchema.hasOwnProperty(x)) {
         uiSchema[x]["ui:order"].map(y => {
+          console.log(y);
           if (state.formData[x][y] !== undefined) {
             rows.push(
               {
@@ -437,7 +469,7 @@ class ConditionalForm extends React.Component {
     });
     var pdf = new jsPDF({unit: "pt", format: "letter"});
     pdf.setFontSize(26);
-    pdf.text(40, 50, "SPI Reimbursement Request");
+    pdf.text(40, 50, "Reimbursement Request");
     pdf.autoTable(cols, rows, opts);
     pdf.save("spi_reimbursement_request.pdf");
   }
