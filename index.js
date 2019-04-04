@@ -14,69 +14,20 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
+const currencies = ["AED", "ARS", "AUD", "BDT", "BGN"]
+
 const schema = {
   title: "",
   type: "object",
   definitions: {
     currencies: {
       type: "string",
-      enum: [
-        "AED",
-        "AUD",
-        "BBD",
-        "BGN",
-        "BHD",
-        "BRL",
-        "BSD",
-        "BWP",
-        "BZD",
-        "CAD",
-        "CHF",
-        "CZK",
-        "DKK",
-        "EUR",
-        "FJD",
-        "GBP",
-        "GHS",
-        "HRK",
-        "HUF",
-        "ILS",
-        "JMD",
-        "JOD",
-        "JPY",
-        "KES",
-        "KWD",
-        "LKR",
-        "LSL",
-        "MUR",
-        "MWK",
-        "MXN",
-        "NOK",
-        "NZD",
-        "OMR",
-        "PHP",
-        "PKR",
-        "PLN",
-        "QAR",
-        "RON",
-        "RSD",
-        "SAR",
-        "SEK",
-        "SGD",
-        "SZL",
-        "THB",
-        "TND",
-        "TRY",
-        "TTD",
-        "USD",
-        "XCD",
-        "ZAR",
-        "ZMW",
-      ],
+      enum: currencies,
       enumNames: [
         "AED - Emirati dirham",
         "AUD - Australian dollar",
         "BBD - Barbadian dollar",
+        "BDT - Bangladeshi taka",
         "BGN - Bulgarian lev",
         "BHD - Bahraini dinar",
         "BRL - Brazilian real",
@@ -184,10 +135,10 @@ const schema = {
       type: "object",
       title: "meta information",
       properties: {
-        date:     { title: "date",     type: "string", format: "date" },
-        email:    { title: "email",    type: "string", format: "email" },
-        project:  { title: "project",  "$ref": "#/definitions/projects" },
-        name:     { title: "name",     type: "string" }
+        project:  { title: "project",  "$ref": "#/definitions/projects" }, // needed?
+        date:     { title: "date",     type: "string", format: "date" },   // needed?
+        name:     { title: "name",     type: "string" },
+        email:    { title: "email",    type: "string", format: "email" }
       },
       required: ["date", "email", "project", "name"]
     },
@@ -196,100 +147,54 @@ const schema = {
       title: "currency information",
       properties: {
         currency: { title: "currency", "$ref": "#/definitions/currencies"},
-        CAD: {
+        AED: {
           type: "object",
-          title: "",
-          properties: {
-            alpha: { title: "alpha", type: "string" },
-            bravo: { title: "bravo", type: "string" }
+          properties:{
+            aed_iban: { title: "iban", type: "string" }
           },
-          required: ["alpha", "bravo"],
+          required: ["aed_iban"]
         },
-        USD: {
+        ARS: {
           type: "object",
-          title: "",
           properties: {
-            delta: { title: "delta", type: "string" },
-            gamma: { title: "gamma", type: "string" }
+            ars_tax_id: { title: "Tax ID (CUIL, CUIT)", type: "string" },
+            ars_account_number: { title: "Account Number (CBU)", type: "string" }
           },
-          required: ["delta", "gamma"]
+          required: ["ars_tax_id", "ars_account_number"]
+        },
+        AUD: {
+          type: "object",
+          properties: {
+            aud_bbs_code: { title: "BBS Code", type: "string" },
+            aus_account_number: { title: "Account Number", type: "string" }
+          },
+          required: ["aud_bbs_code", "aus_account_number"]
+        },
+        BDT: {
+          type: "object",
+          properties: {
+            bdt_bank_name: { title: "Bank Name", type: "string" },
+            bdt_branch_name: { title: "Branch Name", type: "string" },
+            bdt_account_number: { title: "Account Number", type: "string" }
+          },
+          required: ["bdt_bank_name", "bdt_branch_name", "bdt_account_number"]
+        },
+        BGN: {
+          type: "object",
+          properties:{
+            bgn_iban: { title: "iban", type: "string" }
+          },
+          required: ["bgn_iban"]
         }
       },
       required: ["currency"]
-    },
-    acct: {
-      type: "object",
-      title: "account information",
-      properties: {
-        iban:    { title: "iban", type: "string" },
-      }
-    },
-    bank: {
-      type: "object",
-      title: "bank information",
-      properties: {
-        city:    { title: "city",                   type: "string" },
-        country: { title: "country",                type: "string" },
-        line1:   { title: "street address",         type: "string" },
-        line2:   { title: "street address (cont)",  type: "string" },
-        state:   { title: "state",                  type: "string" }
-      },
-      required: ["city", "country", "line1", "state"]
     }
   }
 };
 
-const uiSchema = {
-  "ui:order": [
-    "meta",
-    "curr",
-    "acct",
-    "bank"
-  ],
-  "meta": {
-    "ui:order": [
-      "project",
-      "date",
-      "name",
-      "email",
-    ]
-  },
-  "curr": {
-    "ui:order": [
-      "currency",
-      "CAD",
-      "USD"
-    ],
-    "CAD": {
-      "ui:order": [
-        "alpha",
-        "bravo"
-      ]
-    },
-    "USD": {
-      "ui:order": [
-        "delta",
-        "gamma"
-      ]
-    }
-  },
-  "acct": {
-    "ui:order": [
-      "iban"
-    ]
-  },
-  "bank": {
-    "ui:order": [
-      "line1",
-      "line2",
-      "city",
-      "state",
-      "country"
-    ]
-  }
-};
+const uiSchema = { /* intentionally empty */ };
 
-const rules = ["CAD", "USD"].map(x => {
+const rules = currencies.map(x => {
   return (
     {
       conditions: {
@@ -491,7 +396,7 @@ class ConditionalForm extends React.Component {
         {text: "Reimbursement Request", style: "title"}
       );
 
-      ["meta", "curr", "acct", "bank"].forEach(function(x) {
+      ["meta", "curr"].forEach(function(x) {
         content.push( // table
           makeTable(schema.properties[x], uiSchema[x], formData[x])
         );
