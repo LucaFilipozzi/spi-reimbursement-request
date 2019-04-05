@@ -14,7 +14,103 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-const currencies = ["AED", "ARS", "AUD", "BDT", "BGN"]
+const projects = [
+  "0 A.D.",
+  "ankur.org.in",
+  "aptosid",
+  "Arch Linux",
+  "ArduPilot",
+  "Chakra",
+  "Debian",
+  "Drizzle",
+  "FFmpeg",
+  "Fluxbox",
+  "freedesktop.org",
+  "Fresco",
+  "Gallery",
+  "Glucosio",
+  "GNUstep",
+  "GNU TeXmacs",
+  "haskell.org",
+  "The HeliOS Project",
+  "Jenkins",
+  "LibreOffice",
+  "madwifi-project.org",
+  "MinGW",
+  "NTPsec",
+  "OFTC",
+  "Open Bioinformatics Foundation",
+  "Open MPI",
+  "Open Voting Foundation",
+  "OpenEmbedded",
+  "OpenVAS",
+  "OpenWrt",
+  "OpenZFS",
+  "Open64",
+  "OSUNIX",
+  "Path64",
+  "Performance Co-Pilot",
+  "PostgreSQL",
+  "Privoxy",
+  "Software in the Public Interest",
+  "SproutCore",
+  "Swathanthra Malayalam Computing",
+  "The Mana World",
+  "TideSDK",
+  "Torch",
+  "Tux4Kids",
+  "X.Org",
+  "YafaRay"
+]
+
+const currencies = [
+  "AED - Emirati dirham",
+  "ARS - Argentine peso",
+  "AUD - Australian dollar",
+  "BDT - Bangladeshi taka",
+  "BGN - Bulgarian lev",
+  "BRL - Brazilian real",
+  "CAD - Canadian dollar",
+  "CHF - Swiss franc",
+  "CLP - Chilean peso",
+  "CNY - Chinese yuan",
+  "CZK - Czech koruna",
+  "DKK - Danish krone",
+  "EGP - Egyptian pound",
+  "EUR - Euro",
+  "GBP - British pound",
+  "GEL - Georgian lari",
+  "GHS - Ghanaian cedi",
+  "HKD - Hong Kong dollar",
+  "HRK - Croatian kuna",
+  "HUF - Hungarian forint",
+  "IDR - Indonesian rupiah",
+  "ILS - Israeli new shekel",
+  "INR - Indian rupee",
+  "JPY - Japanese yen",
+  "KES - Kenyan shilling",
+  "LKR - Sri Lankan rupee",
+  "MAD - Mauritian rupee",
+  "MXN - Mexican peso",
+  "MYR - Malaysian ringgit",
+  "NGN - Nigerian naria",
+  "NOK - Norwegian krone",
+  "NPR - Nepalese rupee",
+  "NZD - New Zealand dollar",
+  "PEN - Peruvian neuvo sol",
+  "PHP - Philippine piso",
+  "PKR - Pakistani rupee",
+  "PLN - Polish zloty",
+  "RON - Romanian leu",
+  "RUB - Russian ruble",
+  "SEK - Swedish krona",
+  "SGD - Singapore dollar",
+  "THB - Thai baht",
+  "TRY - Turkish lira",
+  "UAH - Ukranian hryvnia",
+  "VND - Vietnamese dong",
+  "ZAR - South African rand"
+]
 
 const schema = {
   title: "",
@@ -22,112 +118,16 @@ const schema = {
   definitions: {
     currencies: {
       type: "string",
-      enum: currencies,
-      enumNames: [
-        "AED - Emirati dirham",
-        "AUD - Australian dollar",
-        "BBD - Barbadian dollar",
-        "BDT - Bangladeshi taka",
-        "BGN - Bulgarian lev",
-        "BHD - Bahraini dinar",
-        "BRL - Brazilian real",
-        "BSD - Bahamian dollar",
-        "BWP - Botswanan pula",
-        "BZD - Belizean dollar",
-        "CAD - Canadian dollar",
-        "CHF - Swiss franc",
-        "CZK - Czech koruna",
-        "DKK - Danish krone",
-        "EUR - Euro",
-        "FJD - Fijian dollar",
-        "GBP - British pound",
-        "GHS - Ghanaian cedi",
-        "HRK - Croatian kuna",
-        "HUF - Hungarian forint",
-        "ILS - Israeli new shekel",
-        "JMD - Jamaican dollar",
-        "JOD - Jordanian dinar",
-        "JPY - Japanese yen",
-        "KES - Kenyan shilling",
-        "KWD - Kuwaiti dinar",
-        "LKR - Sri Lankan rupee",
-        "LSL - Basotho loti",
-        "MUR - Mauritian rupee",
-        "MWK - Malawian kwacha",
-        "MXN - Mexican peso",
-        "NOK - Norwegian krone",
-        "NZD - New Zealand dollar",
-        "OMR - Omani rial",
-        "PHP - Philippine piso",
-        "PKR - Pakistani rupee",
-        "PLN - Polish zloty",
-        "QAR - Qatari riyal",
-        "RON - Romanian leu",
-        "RSD - Serbian dinar",
-        "SAR - Saudi riyal",
-        "SEK - Swedish krona",
-        "SGD - Singapore dollar",
-        "SZL - Swazi lilangeni",
-        "THB - Thai baht",
-        "TND - Tunisian dinar",
-        "TRY - Turkish lira",
-        "TTD - Trinbagonian dollar",
-        "USD - American dollar",
-        "XCD - East Caribbean dollar",
-        "ZAR - South African rand",
-        "ZMW - Zambian kwacha",
-      ]
+      enumNames: currencies,
+      enum: currencies.map(
+        currency => {
+          return(currency.split(" - ")[0]);
+        }
+      )
     },
     projects: {
       type: "string",
-      enum: [
-        "0 A.D.",
-        "ankur.org.in",
-        "aptosid",
-        "Arch Linux",
-        "ArduPilot",
-        "Chakra",
-        "Debian",
-        "Drizzle",
-        "FFmpeg",
-        "Fluxbox",
-        "freedesktop.org",
-        "Fresco",
-        "Gallery",
-        "Glucosio",
-        "GNUstep",
-        "GNU TeXmacs",
-        "haskell.org",
-        "The HeliOS Project",
-        "Jenkins",
-        "LibreOffice",
-        "madwifi-project.org",
-        "MinGW",
-        "NTPsec",
-        "OFTC",
-        "Open Bioinformatics Foundation",
-        "Open MPI",
-        "Open Voting Foundation",
-        "OpenEmbedded",
-        "OpenVAS",
-        "OpenWrt",
-        "OpenZFS",
-        "Open64",
-        "OSUNIX",
-        "Path64",
-        "Performance Co-Pilot",
-        "PostgreSQL",
-        "Privoxy",
-        "Software in the Public Interest",
-        "SproutCore",
-        "Swathanthra Malayalam Computing",
-        "The Mana World",
-        "TideSDK",
-        "Torch",
-        "Tux4Kids",
-        "X.Org",
-        "YafaRay"
-      ]
+      enum: projects
     }
   },
   properties: {
@@ -135,56 +135,882 @@ const schema = {
       type: "object",
       title: "meta information",
       properties: {
-        project:  { title: "project",  "$ref": "#/definitions/projects" }, // needed?
-        date:     { title: "date",     type: "string", format: "date" },   // needed?
-        name:     { title: "name",     type: "string" },
-        email:    { title: "email",    type: "string", format: "email" }
+        project: {
+          title: "project",
+          "$ref": "#/definitions/projects"
+        },
+        date: {
+          title: "date",
+          type: "string", format: "date"
+        },
+        name: {
+          title: "name",
+          type: "string"
+        },
+        email: {
+          title: "email",
+          type: "string", format: "email"
+        }
       },
-      required: ["date", "email", "project", "name"]
+      required: [
+        "date",
+        "email",
+        "project",
+        "name"
+      ]
     },
     curr: {
       type: "object",
       title: "currency information",
       properties: {
-        currency: { title: "currency", "$ref": "#/definitions/currencies"},
+        currency: {
+          title: "currency", "$ref": "#/definitions/currencies"},
         AED: {
+          title: "",
           type: "object",
-          properties:{
-            aed_iban: { title: "iban", type: "string" }
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
           },
-          required: ["aed_iban"]
+          required: [
+            "iban"
+          ]
         },
         ARS: {
+          title: "",
           type: "object",
           properties: {
-            ars_tax_id: { title: "Tax ID (CUIL, CUIT)", type: "string" },
-            ars_account_number: { title: "Account Number (CBU)", type: "string" }
+            tax_id: {
+              title: "Tax ID (CUIL, CUIT)",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number (CBU)",
+              type: "string"
+            }
           },
-          required: ["ars_tax_id", "ars_account_number"]
+          required: [
+            "tax_id",
+            "account_number"
+          ]
         },
         AUD: {
+          title: "",
           type: "object",
           properties: {
-            aud_bbs_code: { title: "BBS Code", type: "string" },
-            aus_account_number: { title: "Account Number", type: "string" }
+            bbs_code: {
+              title: "BBS Code",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
           },
-          required: ["aud_bbs_code", "aus_account_number"]
+          required: [
+            "bbs_code",
+            "account_number"
+          ]
         },
         BDT: {
+          title: "",
           type: "object",
           properties: {
-            bdt_bank_name: { title: "Bank Name", type: "string" },
-            bdt_branch_name: { title: "Branch Name", type: "string" },
-            bdt_account_number: { title: "Account Number", type: "string" }
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            branch_name: {
+              title: "Branch Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
           },
-          required: ["bdt_bank_name", "bdt_branch_name", "bdt_account_number"]
+          required: [
+            "bank_name",
+            "branch_name",
+            "account_number"
+          ]
         },
         BGN: {
+          title: "",
           type: "object",
           properties:{
-            bgn_iban: { title: "iban", type: "string" }
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
           },
-          required: ["bgn_iban"]
+          required: [
+            "iban"
+          ]
+        },
+        BRL: { // TODO enum account type
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            branch_code: {
+              title: "Branch Code",
+              type: "string"
+            },
+            account_type: {
+              title: "Account Type",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            },
+            recipient_phone_number: {
+              title: "Recipient Phone Number",
+              type: "string"
+            },
+            recipient_tax_registration_number: {
+              title: "Recipient Tax Registration Number (CPF)",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "branch_code",
+            "account_number",
+            "account_type",
+            "recipient_phone_number",
+            "recipient_tax_registration_number"
+          ]
+        },
+        CAD: { // TODO interac and enum account type
+          title: "",
+          type: "object",
+          properties: {
+            bank_institution_number: {
+              title: "Bank Institution Number",
+              type: "string"
+            },
+            branch_transit_number: {
+              title: "Branch Transit Number",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            },
+            account_type: {
+              title: "Account Type",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_institution_number",
+            "branch_transit_number",
+            "account_number",
+            "account type"
+          ]
+        },
+        CHF: {
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        CLP: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            bank_code: {
+              title: "Bank Code",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            },
+            account_type: {
+              title: "Account Type",
+              type: "string"
+            },
+            recipient_rut_number: {
+              title: "Recipient's Rol Unico Tributario",
+              type: "string"
+            },
+            recipient_phone_number: {
+              title: "Recipient's Phone Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "bank_code",
+            "account_number",
+            "account_type",
+            "recipient_rut_number",
+            "recipient_phone_number"
+          ]
+        },
+        CNY: {
+          title: "",
+          type: "object",
+          properties: {
+            unionpay_card_number: {
+              title: "UnionPay Card Number",
+              type: "string"
+            }
+          },
+          required: [
+            "unionpay_card_number"
+          ]
+        },
+        CZK: { // TODO local
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        DKK: {
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        EGP: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "account_number"
+          ]
+        },
+        EUR: {
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        GBP: { // TODO local
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        GEL: {
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        GHS: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "account_number"
+          ]
+        },
+        HKD: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number (12 digits!)",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "account_number"
+          ]
+        },
+        HRK: {
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        HUF: { // TODO local
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        IDR: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "account_number"
+          ]
+        },
+        ILS: {
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        INR: {
+          title: "",
+          type: "object",
+          properties: {
+            ifsc_code: {
+              title: "IFSC Code",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "ifsc_code",
+            "account_number"
+          ]
+        },
+        JPY: { // TODO enum account type
+          title: "",
+          type: "object",
+          properties: {
+            recipient_name_latin: {
+            },
+            recipient_name_katakana: {
+            },
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            branch_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            },
+            account_type: {
+              title: "Account Type",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "branch_name",
+            "account_number",
+            "account_type"
+          ]
+        },
+        KES: { // TODO M-PESA
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_name: {
+              title: "Account Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "account_name",
+            "account_number"
+          ]
+        },
+        LKR: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            branch_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "branch_name",
+            "account_number"
+          ]
+        },
+        MAD: {
+          title: "",
+          type: "object",
+          properties: {
+            swift_number: {
+              title: "BIC/SWIFT Number",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number (RIB)",
+              type: "string"
+            }
+          },
+          required: [
+            "swift_number",
+            "account_number"
+          ]
+        },
+        MXN: {
+          title: "",
+          type: "object",
+          properties: {
+            clabe: {
+              title: "CLABE",
+              type: "string"
+            }
+          },
+          required: [
+            "clabe"
+          ]
+        },
+        MYR: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "account_number"
+          ]
+        },
+        NGN: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "account_number"
+          ]
+        },
+        NOK: {
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        NPR: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "account_number"
+          ]
+        },
+        NZD: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "account_number"
+          ]
+        },
+        PEN: { // TODO enum account type
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            bank_code: {
+              title: "Bank Code",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            },
+            account_type: {
+              title: "Account Type",
+              type: "string"
+            },
+            recipient_phone_number: {
+              title: "Recipient Phone Number",
+              type: "string"
+            },
+            recipient_identification_doc_type: {
+              title: "Recipient ID Document Type",
+              type: "string"
+            },
+            recipient_identification_number: {
+              title: "Recipient Identification Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "bank_code",
+            "account_number",
+            "account_type",
+            "recipient_phone_number",
+            "recipient_identification_doc_type",
+            "recipient_identification_numter"
+          ]
+        },
+        PHP: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "account_number"
+          ]
+        },
+        PKR: {
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        PLN: {
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        RON: {
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        RUB: { // TODO cards
+          title: "",
+          type: "object",
+          properties: {
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            },
+            bik: {
+              title: "BIK",
+              type: "string"
+            },
+            region: {
+              title: "Region",
+              type: "string"
+            }
+          },
+          required: [
+            "account_number",
+            "bik",
+            "region"
+          ]
+        },
+        SEK: { // TODO local
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        SGD: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "account_number"
+          ]
+        },
+        THB: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "account_number"
+          ]
+        },
+        TRY: {
+          title: "",
+          type: "object",
+          properties: {
+            iban: {
+              title: "IBAN",
+              type: "string"
+            }
+          },
+          required: [
+            "iban"
+          ]
+        },
+        UAH: {
+          title: "",
+          type: "object",
+          properties: {
+            recipient_phone_number: {
+              title: "Recipient Phone Number",
+              type: "string"
+            },
+            uah_privatbank_card: {
+              title: "UAH PrivatBank Card (last 4 digits only)",
+              type: "string"
+            }
+          },
+          required: [
+            "recipient_phone_number",
+            "uah_privatbank_card"
+          ]
+        },
+        VND: {
+          title: "",
+          type: "object",
+          properties: {
+            bank_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            branch_name: {
+              title: "Bank Name",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "bank_name",
+            "branch_name",
+            "account_number"
+          ]
+        },
+        ZAR: {
+          title: "",
+          type: "object",
+          properties: {
+            swift_number: {
+              title: "BIC/SWIFT Number",
+              type: "string"
+            },
+            account_number: {
+              title: "Account Number",
+              type: "string"
+            }
+          },
+          required: [
+            "swift_number",
+            "account_number"
+          ]
         }
       },
       required: ["currency"]
@@ -192,27 +1018,30 @@ const schema = {
   }
 };
 
-const uiSchema = { /* intentionally empty */ };
+const uiSchema = { };
 
-const rules = currencies.map(x => {
-  return (
-    {
-      conditions: {
-        "curr.currency": {
-          not: {
-            equal: x
+const rules = currencies.map(
+  currency => {
+    var currencyCode = currency.split(" - ")[0];
+    return (
+      {
+        conditions: {
+          "curr.currency": {
+            not: {
+              equal:currencyCode 
+            }
+          }
+        },
+        event: {
+          type: "remove",
+          params: {
+            field: "curr." + currencyCode
           }
         }
-      },
-      event: {
-        type: "remove",
-        params: {
-          field: "curr." + x
-        }
       }
-    }
-  );
-});
+    );
+  }
+);
 
 class Instructions extends React.Component {
   constructor(props) {
@@ -335,7 +1164,7 @@ class ConditionalForm extends React.Component {
   }
 
   onSubmit(state) {
-    var makeBody = function(schema, uiSchema, formData) {
+    var makeBody = function(schema, formData) {
       var body = [];
 
       body.push( // header
@@ -345,30 +1174,28 @@ class ConditionalForm extends React.Component {
         ]
       );
 
-      uiSchema["ui:order"].forEach(function(x) {
-        if (x in formData) {
-          body.push( // row
-            (typeof(formData[x]) === "object") ?
-              [ // recurse
-                {text: "additional required parameters"},
-                makeTable(schema.properties[x], uiSchema[x], formData[x])
-              ] : [
-                {text: schema.properties[x].title},
-                {text: formData[x]}
-              ]
-          );
-        }
-      });
+      for (var x in formData) {
+        body.push( // row
+          (typeof(formData[x]) === "object") ?
+            [ // recurse
+              {text: "additional required parameters"},
+              makeTable(schema.properties[x], formData[x])
+            ] : [
+              {text: schema.properties[x].title},
+              {text: formData[x]}
+            ]
+        );
+      }
 
       return(body);
     };
 
-    var makeTable = function(properties, uiSchema, formData) {
+    var makeTable = function(properties, formData) {
       var table = {
         table: {
           headerRows: 1,
           widths: [100, "*"],
-          body: makeBody(properties, uiSchema, formData)
+          body: makeBody(properties, formData)
         },
         margin: [0, 15, 0, 0]
       };
@@ -376,7 +1203,7 @@ class ConditionalForm extends React.Component {
       return(table);
     };
 
-    var makeDocument = function(schema, uiSchema, formData) {
+    var makeDocument = function(schema, formData) {
       const styles = {
         title: {
           fontSize: 24,
@@ -393,14 +1220,19 @@ class ConditionalForm extends React.Component {
       var content = [];
 
       content.push( // title
-        {text: "Reimbursement Request", style: "title"}
+        {
+          text: "Reimbursement Request",
+          style: "title"
+        }
       );
 
-      ["meta", "curr"].forEach(function(x) {
-        content.push( // table
-          makeTable(schema.properties[x], uiSchema[x], formData[x])
-        );
-      });
+      ["meta", "curr"].forEach(
+        function(x) {
+          content.push( // table
+            makeTable(schema.properties[x], formData[x])
+          );
+        }
+      );
 
       var document = {
         styles: styles,
@@ -411,7 +1243,7 @@ class ConditionalForm extends React.Component {
     }
 
     var formData = state.formData;
-    pdfMake.createPdf(makeDocument(schema, uiSchema, formData)).download();
+    pdfMake.createPdf(makeDocument(schema, formData)).download();
   }
 
   render() {
