@@ -250,7 +250,7 @@ const schema = {
             "iban"
           ]
         },
-        BRL: { // TODO enum account type
+        BRL: {
           title: "",
           type: "object",
           properties: {
@@ -264,7 +264,11 @@ const schema = {
             },
             account_type: {
               title: "Account Type",
-              type: "string"
+              type: "string",
+              enum: [
+                "checking",
+                "savings"
+              ]
             },
             account_number: {
               title: "Account Number",
@@ -288,7 +292,7 @@ const schema = {
             "recipient_tax_registration_number"
           ]
         },
-        CAD: { // TODO interac and enum account type
+        CAD: { // TODO interac option
           title: "",
           type: "object",
           properties: {
@@ -306,14 +310,18 @@ const schema = {
             },
             account_type: {
               title: "Account Type",
-              type: "string"
+              type: "string",
+              enum: [
+                "checking",
+                "savings"
+              ]
             }
           },
           required: [
             "bank_institution_number",
             "branch_transit_number",
             "account_number",
-            "account type"
+            "account_type"
           ]
         },
         CHF: {
@@ -380,7 +388,7 @@ const schema = {
             "unionpay_card_number"
           ]
         },
-        CZK: { // TODO local
+        CZK: { // TODO local option
           title: "",
           type: "object",
           properties: {
@@ -437,7 +445,7 @@ const schema = {
             "iban"
           ]
         },
-        GBP: { // TODO local
+        GBP: { // TODO local option
           title: "",
           type: "object",
           properties: {
@@ -512,7 +520,7 @@ const schema = {
             "iban"
           ]
         },
-        HUF: { // TODO local
+        HUF: { // TODO local option
           title: "",
           type: "object",
           properties: {
@@ -574,7 +582,7 @@ const schema = {
             "account_number"
           ]
         },
-        JPY: { // TODO enum account type
+        JPY: {
           title: "",
           type: "object",
           properties: {
@@ -587,7 +595,7 @@ const schema = {
               type: "string"
             },
             branch_name: {
-              title: "Bank Name",
+              title: "Branch Name",
               type: "string"
             },
             account_number: {
@@ -596,7 +604,12 @@ const schema = {
             },
             account_type: {
               title: "Account Type",
-              type: "string"
+              type: "string",
+              enum: [
+                "Futsuu",
+                "Chochiku",
+                "Touza"
+              ]
             }
           },
           required: [
@@ -606,7 +619,7 @@ const schema = {
             "account_type"
           ]
         },
-        KES: { // TODO M-PESA
+        KES: { // TODO M-PESA option
           title: "",
           type: "object",
           properties: {
@@ -768,7 +781,7 @@ const schema = {
             "account_number"
           ]
         },
-        PEN: { // TODO enum account type
+        PEN: {
           title: "",
           type: "object",
           properties: {
@@ -786,7 +799,11 @@ const schema = {
             },
             account_type: {
               title: "Account Type",
-              type: "string"
+              type: "string",
+              enum: [
+                "checking",
+                "savings"
+              ]
             },
             recipient_phone_number: {
               title: "Recipient Phone Number",
@@ -868,7 +885,7 @@ const schema = {
             "iban"
           ]
         },
-        RUB: { // TODO cards
+        RUB: { // TODO cards option
           title: "",
           type: "object",
           properties: {
@@ -891,7 +908,7 @@ const schema = {
             "region"
           ]
         },
-        SEK: { // TODO local
+        SEK: { // TODO local option
           title: "",
           type: "object",
           properties: {
@@ -1164,86 +1181,94 @@ class ConditionalForm extends React.Component {
   }
 
   onSubmit(state) {
-    var makeBody = function(schema, formData) {
-      var body = [];
-
-      body.push( // header
+    var makeMetaBody = function(schema, formData) {
+      var body = [
         [
           {text: schema.title, colSpan: 2, style: "table"},
           {}
         ]
-      );
+      ];
 
       for (var x in formData) {
-        body.push( // row
-          (typeof(formData[x]) === "object") ?
-            [ // recurse
-              {text: "additional required parameters"},
-              makeTable(schema.properties[x], formData[x])
-            ] : [
-              {text: schema.properties[x].title},
-              {text: formData[x]}
-            ]
+        body.push(
+          [
+            {text: schema.properties[x].title},
+            {text: formData[x]}
+          ]
         );
       }
 
       return(body);
     };
 
-    var makeTable = function(properties, formData) {
-      var table = {
-        table: {
-          headerRows: 1,
-          widths: [100, "*"],
-          body: makeBody(properties, formData)
-        },
-        margin: [0, 15, 0, 0]
-      };
+    var makeCurrBody = function(schema, formData) {
+      var x = formData["currency"];
 
-      return(table);
+      var body = [
+        [
+          {text: schema.title, colSpan: 2, style: "table"},
+          {}
+        ],
+        [
+          {text: "currency"},
+          {text: x}
+        ]
+      ];
+
+      for (var y in formData[x]) {
+        body.push(
+          [
+            {text: schema.properties[x].properties[y].title},
+            {text: formData[x][y]}
+          ]
+        );
+      }
+
+      return(body);
     };
 
-    var makeDocument = function(schema, formData) {
-      const styles = {
-        title: {
-          fontSize: 24,
-          bold: true
+    var makeDocDefinition = function(schema, formData) {
+      var docDefinition = {
+        styles: {
+          title: {
+            fontSize: 24,
+            bold: true
+          },
+          table: {
+            fontSize: 16,
+            bold: true,
+            color: 'white',
+            fillColor: 'gray',
+          }
         },
-        table: {
-          fontSize: 16,
-          bold: true,
-          color: 'white',
-          fillColor: 'gray',
-        }
+        content: [
+          {
+            text: "Reimbursement Request",
+            style: "title"
+          },
+          {
+            table: {
+              headerRows: 1,
+              widths: [100, "*"],
+              body: makeMetaBody(schema.properties["meta"], formData["meta"])
+            },
+            margin: [0, 15, 0, 0]
+          },
+          {
+            table: {
+              headerRows: 1,
+              widths: [100, "*"],
+              body: makeCurrBody(schema.properties["curr"], formData["curr"])
+            },
+            margin: [0, 15, 0, 0]
+          },
+        ]
       };
 
-      var content = [];
-
-      content.push( // title
-        {
-          text: "Reimbursement Request",
-          style: "title"
-        }
-      );
-
-      ["meta", "curr"].forEach(
-        function(x) {
-          content.push( // table
-            makeTable(schema.properties[x], formData[x])
-          );
-        }
-      );
-
-      var document = {
-        styles: styles,
-        content: content
-      };
-
-      return(document);
+      return(docDefinition);
     }
 
-    var formData = state.formData;
-    pdfMake.createPdf(makeDocument(schema, formData)).download();
+    pdfMake.createPdf(makeDocDefinition(schema, state.formData)).download();
   }
 
   render() {
