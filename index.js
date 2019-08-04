@@ -651,7 +651,7 @@ const schema = {
               type: "string"
             },
             branch_name: {
-              title: "Bank Name",
+              title: "Branch Name",
               type: "string"
             },
             account_number: {
