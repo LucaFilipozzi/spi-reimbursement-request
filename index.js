@@ -143,7 +143,8 @@ const schema = {
         },
         date: {
           title: "Date",
-          type: "string", format: "date"
+          type: "string",
+          format: "date"
         },
         name: {
           title: "Name",
@@ -793,21 +794,22 @@ const schema = {
                     "KRW"
                   ]
                 },
-                dob {
-                  title: "Date of birth (YYYY-MM-DD)",
-                  type: "string"
+                date_of_birth: {
+                  title: "Date of Birth",
+                  type: "string",
+                  format: "date"
                 },
                 account_number: {
                   title: "Account Number",
                   type: "string"
-                }
+                },
                 bank_name: {
                   title: "Bank Name/Code",
                   type: "string"
                 },
               },
               required: [
-                "dob",
+                "date_of_birth",
                 "account_number",
                 "bank_name"
               ]
@@ -1236,7 +1238,7 @@ const schema = {
                   title: "Currency",
                   type: "string",
                   enum: [
-                    "INR"
+                    "TZS"
                   ]
                 },
                 bank_name: {
@@ -1352,7 +1354,7 @@ const schema = {
                           title: "Payment Method",
                           type: "string",
                           enum: [
-                            "checking"
+                            "Check by post"
                           ]
                         },
                         address_line_one: {
@@ -1371,8 +1373,8 @@ const schema = {
                           title: "State",
                           type: "string"
                         },
-                        address_zipcode: {
-                          title: "ZIP Code",
+                        address_postalcode: {
+                          title: "Postal Code",
                           type: "string"
                         },
                         address_country: {
@@ -1383,7 +1385,7 @@ const schema = {
                       required: [
                         "address_line_one",
                         "address_city",
-                        "address_zipcode"
+                        "address_postalcode"
                       ]
                     }
                   ]
