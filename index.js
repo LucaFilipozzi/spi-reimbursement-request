@@ -1313,7 +1313,7 @@ const schema = {
                   type: "string",
                   enum: [
                     "ACH",
-                    "checking"
+                    "Check by post"
                   ]
                 }
               },
@@ -1374,13 +1374,15 @@ const schema = {
                         address_zipcode: {
                           title: "ZIP Code",
                           type: "string"
+                        },
+                        address_country: {
+                          title: "Country",
+                          type: "string"
                         }
                       },
                       required: [
                         "address_line_one",
-                        "address_line_two",
                         "address_city",
-                        "address_state",
                         "address_zipcode"
                       ]
                     }
