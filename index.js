@@ -1231,7 +1231,8 @@ const schema = {
                     "USD"
                   ]
                 },
-                method: {
+                payment_method: {
+                  title: "Payment Method",
                   type: "string",
                   enum: [
                     "ACH",
@@ -1240,14 +1241,15 @@ const schema = {
                 }
               },
               required: [
-                "method"
+                "payment_method"
               ],
               dependencies: {
-                method: {
+                payment_method: {
                   oneOf: [
                     {
                       properties: {
-                        method: {
+                        payment_method: {
+                          title: "Payment Method",
                           type: "string",
                           enum: [
                             "ACH"
@@ -1269,7 +1271,8 @@ const schema = {
                     },
                     {
                       properties: {
-                        method: {
+                        payment_method: {
+                          title: "Payment Method",
                           type: "string",
                           enum: [
                             "checking"
@@ -1491,18 +1494,44 @@ class ConditionalForm extends React.Component {
       ];
 
       for (var x in formData) {
-        body.push(
-          [
-            {text: schema.properties[x].title},
-            {text: formData[x]}
-          ]
-        );
+        // formData property order is not deterministic
+        // TODO implement uiSchema if order is critical
+        if (schema.properties.hasOwnProperty(x)) {
+          body.push(
+            [
+              {text: schema.properties[x].title},
+              {text: formData[x]}
+            ]
+          );
+        } else {
+          for (var property in schema.dependencies) {
+            if (formData.hasOwnProperty(property)) {
+              // find appropriate subSchema
+              var subSchema = schema.dependencies[property].oneOf.find(
+                o => {
+                  return o.properties[property].enum[0] === formData[property]
+                }
+              );
+              if ( subSchema.properties.hasOwnProperty(x)) {
+                // ignore unknown properies... handles case where user
+                // has input values for another currency
+                // TODO implement onChange to clear subform on currency change
+                body.push(
+                  [
+                    {text: subSchema.properties[x].title},
+                    {text: formData[x]}
+                  ]
+                );
+              }
+            }
+          }
+        }
       }
 
       return(body);
     };
 
-    var makeDocDefinition = function(schema, formData) {
+    var makeDocDefinition = function(title, schema, formData) {
       var docDefinition = {
         styles: {
           title: {
@@ -1512,13 +1541,13 @@ class ConditionalForm extends React.Component {
           table: {
             fontSize: 16,
             bold: true,
-            color: 'white',
-            fillColor: 'gray',
+            color: "white",
+            fillColor: "gray",
           }
         },
         content: [
           {
-            text: "SPI Reimbursement Request",
+            text: title,
             style: "title"
           },
           {
@@ -1555,7 +1584,8 @@ class ConditionalForm extends React.Component {
       return(docDefinition);
     }
 
-    pdfMake.createPdf(makeDocDefinition(schema, state.formData)).download();
+    var title = "SPI Reimbursement Request";
+    pdfMake.createPdf(makeDocDefinition(title, schema, state.formData)).download();
   }
 
   render() {
