@@ -1496,7 +1496,7 @@ class ConditionalForm extends React.Component {
       for (var x in formData) {
         // formData property order is not deterministic
         // TODO implement uiSchema if order is critical
-        if (schema.properties.hasOwnProperty(x)) {
+        if (Object.prototype.hasOwnProperty.call(schema.properties, x)) {
           body.push(
             [
               {text: schema.properties[x].title},
@@ -1505,14 +1505,14 @@ class ConditionalForm extends React.Component {
           );
         } else {
           for (var property in schema.dependencies) {
-            if (formData.hasOwnProperty(property)) {
+            if (Object.prototype.hasOwnProperty.call(formData, property)) {
               // find appropriate subSchema
               var subSchema = schema.dependencies[property].oneOf.find(
                 o => {
                   return o.properties[property].enum[0] === formData[property]
                 }
               );
-              if ( subSchema.properties.hasOwnProperty(x)) {
+              if (Object.prototype.hasOwnProperty.call(subSchema.properties, property)) {
                 // ignore unknown properies... handles case where user
                 // has input values for another currency
                 // TODO implement onChange to clear subform on currency change
