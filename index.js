@@ -87,6 +87,7 @@ const currencies = [
   "INR - Indian rupee",
   "JPY - Japanese yen",
   "KES - Kenyan shilling",
+  "KRW - South Korean won",
   "LKR - Sri Lankan rupee",
   "MAD - Mauritian rupee",
   "MXN - Mexican peso",
@@ -105,7 +106,9 @@ const currencies = [
   "SGD - Singapore dollar",
   "THB - Thai baht",
   "TRY - Turkish lira",
+  "TZS - Tanzanian shillings",
   "UAH - Ukranian hryvnia",
+  "UGX - Ugandan shillings",
   "USD - United States dollar",
   "VND - Vietnamese dong",
   "ZAR - South African rand"
@@ -781,6 +784,34 @@ const schema = {
                 "account_number"
               ]
             },
+            { // KRW
+              properties: {
+                currency: {
+                  title: "Currency",
+                  type: "string",
+                  enum: [
+                    "KRW"
+                  ]
+                },
+                dob {
+                  title: "Date of birth (YYYY-MM-DD)",
+                  type: "string"
+                },
+                account_number: {
+                  title: "Account Number",
+                  type: "string"
+                }
+                bank_name: {
+                  title: "Bank Name/Code",
+                  type: "string"
+                },
+              },
+              required: [
+                "dob",
+                "account_number",
+                "bank_name"
+              ]
+            },
             { // LKR
               properties: {
                 currency: {
@@ -1199,6 +1230,29 @@ const schema = {
                 "iban"
               ]
             },
+            { // TZS
+              properties: {
+                currency: {
+                  title: "Currency",
+                  type: "string",
+                  enum: [
+                    "INR"
+                  ]
+                },
+                bank_name: {
+                  title: "Bank Name",
+                  type: "string"
+                },
+                account_number: {
+                  title: "Account Number",
+                  type: "string"
+                }
+              },
+              required: [
+                "bank_name",
+                "account_number"
+              ]
+            },
             { // UAH
               properties: {
                 currency: {
@@ -1220,6 +1274,29 @@ const schema = {
               required: [
                 "recipient_phone_number",
                 "uah_privatbank_card"
+              ]
+            },
+            { // UGX
+              properties: {
+                currency: {
+                  title: "Currency",
+                  type: "string",
+                  enum: [
+                    "UGX"
+                  ]
+                },
+                bank_name: {
+                  title: "Bank Name",
+                  type: "string"
+                },
+                account_number: {
+                  title: "Account Number",
+                  type: "string"
+                }
+              },
+              required: [
+                "bank_name",
+                "account_number"
               ]
             },
             { // USD
