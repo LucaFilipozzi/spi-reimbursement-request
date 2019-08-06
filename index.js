@@ -1588,7 +1588,7 @@ class ConditionalForm extends React.Component {
                   return o.properties[property].enum[0] === formData[property]
                 }
               );
-              if (Object.prototype.hasOwnProperty.call(subSchema.properties, property)) {
+              if (Object.prototype.hasOwnProperty.call(subSchema.properties, x)) {
                 // ignore unknown properies... handles case where user
                 // has input values for another currency
                 // TODO implement onChange to clear subform on currency change
