@@ -1661,7 +1661,8 @@ class ConditionalForm extends React.Component {
     }
 
     var title = "SPI Reimbursement Request";
-    pdfMake.createPdf(makeDocDefinition(title, schema, state.formData)).download();
+    var fname = "SPI_Reimbursement_Request.pdf";
+    pdfMake.createPdf(makeDocDefinition(title, schema, state.formData)).download(fname);
   }
 
   render() {
