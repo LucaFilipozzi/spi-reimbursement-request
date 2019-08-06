@@ -51,7 +51,6 @@ const projects = [
   "The Mana World",
   "translatewiki",
   "systemd",
-  "TideSDK",
   "Tux4Kids",
   "X.Org",
   "YafaRay"
