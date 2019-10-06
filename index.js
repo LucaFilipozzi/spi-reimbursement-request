@@ -1461,23 +1461,26 @@ class Instructions extends React.Component {
     return (
       <div>
         <Card>
-          <CardHeader onClick={this.toggle} data-index={1}>Step 1: Prepare the Reimbursement Request</CardHeader>
-          <Collapse isOpen={this.state.collapse === 1}>
-            <CardBody>
-              <p>Use the Form to generate the Reimbursement Request. Ensure that the banking details are accurate. Incorrect banking details are a major source of delays. Click Submit to locally generate a PDF file (no data is transmitted to the server).</p>
-            </CardBody>
-          </Collapse>
-        </Card>
-        <Card>
           <CardHeader onClick={this.toggle} data-index={2}>Step 2: Prepare the Expense Report</CardHeader>
           <Collapse isOpen={this.state.collapse === 2}>
             <CardBody>
               <p>Use the <a href="https://www.xe.com/travel-expenses-calculator/">XE Travel Expenses Calculator</a> to prepare an Expense Report. Enter Receipt Details, one row per receipt, specifing the correct date, amount and currency of the transaction. Click the printer icon at the bottom of the form and save as a PDF file.</p>
               <p>Notes:</p>
               <ul>
-                <li>Set Name to the name entered in Step 1.</li>
-                <li>Set Your Home Currency to the currency entered in Step 1.</li>
                 <li>Set Credit Card to 3%, Debit Card to 5%, Foreign Cash to 5%, and Traveller Cheque to 2%.</li>
+              </ul>
+            </CardBody>
+          </Collapse>
+        </Card>
+        <Card>
+          <CardHeader onClick={this.toggle} data-index={1}>Step 2: Prepare the Reimbursement Request</CardHeader>
+          <Collapse isOpen={this.state.collapse === 1}>
+            <CardBody>
+              <p>Use the Form to generate the Reimbursement Request. Ensure that the banking details are accurate. Incorrect banking details are a major source of delays. Click Submit to locally generate a PDF file (no data is transmitted to the server).</p>
+              <p>Notes:</p>
+              <ul>
+                <li>Set currency to the same as in Step 1.</li>
+                <li>Set amount to the same as in Step 1.</li>
               </ul>
             </CardBody>
           </Collapse>
@@ -1496,8 +1499,8 @@ class Instructions extends React.Component {
             <CardBody>
               <p>Collect into a Submission Package (a single PDF file), the following:</p>
               <ul>
-                <li>from Step 1, the Reimbursement Request</li>
-                <li>from Step 2, the Expense Report</li>
+                <li>from Step 2, the Reimbursement Request</li>
+                <li>from Step 1, the Expense Report</li>
                 <li>from Step 3, the Ordered Receipts</li>
               </ul>
               <p>Name it <em>ReimbursementRequest_«YourName»_«IsoDate».pdf</em>.</p>
