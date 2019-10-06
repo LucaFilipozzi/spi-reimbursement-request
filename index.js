@@ -161,6 +161,10 @@ const schema = {
       type: "object",
       title: "currency / transfer information",
       properties: {
+        amount: {
+          title: "Amount",
+          type: "number"
+        },
         currency: {
           title: "Currency",
           "$ref": "#/definitions/currencies"
