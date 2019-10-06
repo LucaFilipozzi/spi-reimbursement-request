@@ -1465,7 +1465,7 @@ class Instructions extends React.Component {
     return (
       <div>
         <Card>
-          <CardHeader onClick={this.toggle} data-index={2}>Step 2: Prepare the Expense Report</CardHeader>
+          <CardHeader onClick={this.toggle} data-index={2}>Step 1: Prepare the Expense Report</CardHeader>
           <Collapse isOpen={this.state.collapse === 2}>
             <CardBody>
               <p>Use the <a href="https://www.xe.com/travel-expenses-calculator/">XE Travel Expenses Calculator</a> to prepare an Expense Report. Enter Receipt Details, one row per receipt, specifing the correct date, amount and currency of the transaction. Click the printer icon at the bottom of the form and save as a PDF file.</p>
