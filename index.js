@@ -1493,7 +1493,7 @@ class Instructions extends React.Component {
           <CardHeader onClick={this.toggle} data-index={3}>Step 3: Prepare the Ordered Receipts</CardHeader>
           <Collapse isOpen={this.state.collapse === 3}>
             <CardBody>
-              <p>Collect your receipts in the <em>same order</em> as the rows in the Expense Report from Step 2. Save them as PDF files. For paper receipts, scan them with a multi-function device or photograph them with your phone, converting to PDF.</p>
+              <p>Collect your receipts in the <em>same order</em> as the rows in the Expense Report from Step 1. Save them as PDF files. For paper receipts, scan them with a multi-function device or photograph them with your phone, converting to PDF.</p>
             </CardBody>
           </Collapse>
         </Card>
@@ -1512,7 +1512,7 @@ class Instructions extends React.Component {
               <ul>
                 <li>An example filename is <em>ReimbursementRequest_LucaFilipozzi_20181006.pdf</em>.</li>
                 <li>Ensure that the entire Submission Package can be easily understood as poor quality submissions are a major source of delays.</li>
-                <li>Consider using the pdfunite utility from the poppler-utils package (in Debian) to merge the individual PDF files into a single PDF file: <pre>pdfunite step1.pdf step2.pdf step3a.pdf step3b.pdf ... step3n.pdf output.pdf</pre>.</li>
+                <li>Consider using the pdfunite utility from the poppler-utils package (in Debian) to merge the individual PDF files into a single PDF file: <pre>pdfunite step2.pdf step1.pdf step3a.pdf step3b.pdf ... step3n.pdf output.pdf</pre>.</li>
               </ul>
             </CardBody>
           </Collapse>
