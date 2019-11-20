@@ -311,6 +311,10 @@ const schema = {
                     "savings"
                   ]
                 },
+                iban: {
+                  title: "IBAN",
+                  type: "string"
+                },
                 account_number: {
                   title: "Account Number",
                   type: "string"
