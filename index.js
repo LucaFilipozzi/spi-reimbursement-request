@@ -1032,6 +1032,14 @@ const schema = {
                 recipient_identification_number: {
                   title: "Recipient Identification Number",
                   type: "string"
+                },
+                recipient_date_of_birth: {
+                  title: "Recipient Date of Birth (YYYY-MM-DD)",
+                  type: "string"
+                },
+                recipient_job: {
+                  title: "Recipient Job",
+                  type: "string"
                 }
               },
               required: [
@@ -1041,7 +1049,9 @@ const schema = {
                 "account_type",
                 "recipient_phone_number",
                 "recipient_identification_doc_type",
-                "recipient_identification_numter"
+                "recipient_identification_number",
+                "recipient_date_of_birth",
+                "recipient_job"
               ]
             },
             { // PHP
