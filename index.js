@@ -147,7 +147,7 @@ const schema = {
         },
         email: {
           title: "Email",
-          type: "string", format: "email"
+          type: "string"
         }
       },
       required: [
