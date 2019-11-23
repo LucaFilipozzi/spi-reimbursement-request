@@ -136,11 +136,6 @@ const schema = {
           title: "Project",
           "$ref": "#/definitions/projects"
         },
-        date: {
-          title: "Date",
-          type: "string",
-          format: "date"
-        },
         name: {
           title: "Name",
           type: "string"
@@ -151,7 +146,6 @@ const schema = {
         }
       },
       required: [
-        "date",
         "email",
         "project",
         "name"
@@ -1668,8 +1662,7 @@ class ConditionalForm extends React.Component {
     }
 
     var title = "SPI Reimbursement Request";
-    var fdate = new Date(state.formData["meta"]["date"]).toISOString().split('T')[0];
-    var fname = "SPI_Reimbursement_Request_" + fdate + ".pdf";
+    var fname = "SPI_Reimbursement_Request_Coversheet.pdf";
     pdfMake.createPdf(makeDocDefinition(title, schema, state.formData)).download(fname);
   }
 
