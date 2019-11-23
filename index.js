@@ -136,11 +136,6 @@ const schema = {
           title: "Project",
           "$ref": "#/definitions/projects"
         },
-        date: {
-          title: "Date",
-          type: "string",
-          format: "date"
-        },
         name: {
           title: "Name",
           type: "string"
