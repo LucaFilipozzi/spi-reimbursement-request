@@ -208,7 +208,7 @@ const schema = {
                   type: "string"
                 },
                 account_number: {
-                  title: "Account Number (CBU)",
+                  title: "Account Number (Clave Bancaria Uniforme - CBU)",
                   type: "string"
                 }
               },
