@@ -208,7 +208,7 @@ const schema = {
                   type: "string"
                 },
                 account_number: {
-                  title: "Account Number (CBU)",
+                  title: "Account Number (Clave Bancaria Uniforme - CBU)",
                   type: "string"
                 }
               },
@@ -310,6 +310,10 @@ const schema = {
                     "checking",
                     "savings"
                   ]
+                },
+                iban: {
+                  title: "IBAN",
+                  type: "string"
                 },
                 account_number: {
                   title: "Account Number",
@@ -725,6 +729,59 @@ const schema = {
                   title: "Recipient Name (Katakana characters)",
                   type: "string"
                 },
+                recipient_prefecture: {
+                  title: "Recipient Prefecture",
+                  type: "string",
+                  enum: [
+                    "Hokkaido",
+                    "Aomori",
+                    "Iwate",
+                    "Miyagi",
+                    "Akita",
+                    "Yamagata",
+                    "Fukushima",
+                    "Ibaraki",
+                    "Tochigi",
+                    "Gunma",
+                    "Saitama",
+                    "Chiba",
+                    "Tokyo",
+                    "Kanagawa",
+                    "Niigata",
+                    "Toyama",
+                    "Ishikawa",
+                    "Fukui",
+                    "Yamanashi",
+                    "Nagano",
+                    "Gifu",
+                    "Shizuoka",
+                    "Aichi",
+                    "Mie",
+                    "Shiga",
+                    "Kyoto",
+                    "Osaka",
+                    "Hyogo",
+                    "Nara",
+                    "Wakayama",
+                    "Tottori",
+                    "Shimane",
+                    "Okayama",
+                    "Hiroshima",
+                    "Yamaguchi",
+                    "Tokushima",
+                    "Kagawa",
+                    "Ehime",
+                    "Kochi",
+                    "Fukuoka",
+                    "Saga",
+                    "Nagasaki",
+                    "Kumamoto",
+                    "Oita",
+                    "Miyazaki",
+                    "Kagoshima",
+                    "Okinawa"
+                  ]
+                },
                 bank_name: {
                   title: "Bank Name",
                   type: "string"
@@ -750,6 +807,7 @@ const schema = {
               required: [
                 "recipient_name_latin",
                 "recipient_name_katakana",
+                "recipient_prefecture",
                 "bank_name",
                 "branch_name",
                 "account_number",
@@ -1032,6 +1090,14 @@ const schema = {
                 recipient_identification_number: {
                   title: "Recipient Identification Number",
                   type: "string"
+                },
+                recipient_date_of_birth: {
+                  title: "Recipient Date of Birth (YYYY-MM-DD)",
+                  type: "string"
+                },
+                recipient_job: {
+                  title: "Recipient Job",
+                  type: "string"
                 }
               },
               required: [
@@ -1041,7 +1107,9 @@ const schema = {
                 "account_type",
                 "recipient_phone_number",
                 "recipient_identification_doc_type",
-                "recipient_identification_numter"
+                "recipient_identification_number",
+                "recipient_date_of_birth",
+                "recipient_job"
               ]
             },
             { // PHP
